@@ -69,9 +69,9 @@ namespace biker.Controllers
 
         // POST: api/national
         [HttpPost]
-        public async Task<ActionResult<National>> PostNational(List<National> national)
+        public async Task<ActionResult<National>> PostNational(National national)
         {
-            national.ForEach(n => _context.Nationals.Add(n));
+            _context.Nationals.Add(national);
             await _context.SaveChangesAsync();
 
             return Ok(national);

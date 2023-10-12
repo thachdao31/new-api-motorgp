@@ -34,14 +34,9 @@ namespace biker.Controller {
         }
 
         [HttpPost]
-        public ActionResult<Biker> PostBiker([FromBody] List<Biker> bikers)
+        public ActionResult<Biker> PostBiker(Biker bikers)
         {
-            foreach (var biker in bikers)
-            {
-                biker.National = _context.Nationals.Find(biker.NationalId);
-            }
-
-            bikers.ForEach(n => _context.Bikers.Add(n));
+            _context.Bikers.Add(bikers);
             _context.SaveChanges();
             return Ok(bikers);
         }

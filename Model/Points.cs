@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace biker.Models
 {
@@ -8,8 +9,8 @@ namespace biker.Models
         public int Id { get; set; }
         public int? Point { get; set; }
         public int BikerId { get; set; }
-        public virtual Biker Biker {get; set;}
+        public Biker Biker {get; set;}
         public int RacesId { get; set; }
-        public virtual Races Races {get; set;}
+        public Races Races {get; set;}
     }
 }

@@ -19,7 +19,12 @@ namespace biker.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Points>>> Gets()
         {
-            return await _context.Points.ToListAsync();
+            var points = await _context.Points.ToListAsync();
+            foreach ( var point in points ) {
+                point.Biker = _context.Bikers.Find(point.BikerId);
+                point.Races = _context.Races.Find(point.RacesId);
+            }
+            return Ok(points);
         }
 
         // GET: api//5
@@ -32,44 +37,48 @@ namespace biker.Controllers
             {
                 return NotFound();
             }
+            points.Biker = _context.Bikers.Find(points.BikerId);
+            points.Races = _context.Races.Find(points.RacesId);
 
             return points;
         }
 
-        // PUT: api//5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id,  Points points)
-        {
-            if (id != points.Id)
-            {
-                return BadRequest();
-            }
+        // // PUT: api//5
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> Put(int id,  Points points)
+        // {
+        //     if (id != points.Id)
+        //     {
+        //         return BadRequest();
+        //     }
 
-            _context.Entry(points).State = EntityState.Modified;
+        //     _context.Entry(points).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!Exists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //     try
+        //     {
+        //         await _context.SaveChangesAsync();
+        //     }
+        //     catch (DbUpdateConcurrencyException)
+        //     {
+        //         if (!Exists(id))
+        //         {
+        //             return NotFound();
+        //         }
+        //         else
+        //         {
+        //             throw;
+        //         }
+        //     }
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
         // POST: api/
         [HttpPost]
         public async Task<ActionResult<Points>> Post(Points points )
         {
+            points.Biker = _context.Bikers.Find(points.BikerId);
+            points.Races = _context.Races.Find(points.RacesId);
             _context.Add(points);
             await _context.SaveChangesAsync();
 

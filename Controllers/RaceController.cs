@@ -36,41 +36,41 @@ namespace new_api_motorgp.Controllers
             return Race;
         }
 
-        // PUT: api/Race/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutRace(int id, Races Race)
-        {
-            if (id != Race.Id)
-            {
-                return BadRequest();
-            }
+        // // PUT: api/Race/5
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> PutRace(int id, Races Race)
+        // {
+        //     if (id != Race.Id)
+        //     {
+        //         return BadRequest();
+        //     }
 
-            _context.Entry(Race).State = EntityState.Modified;
+        //     _context.Entry(Race).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RaceExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //     try
+        //     {
+        //         await _context.SaveChangesAsync();
+        //     }
+        //     catch (DbUpdateConcurrencyException)
+        //     {
+        //         if (!RaceExists(id))
+        //         {
+        //             return NotFound();
+        //         }
+        //         else
+        //         {
+        //             throw;
+        //         }
+        //     }
 
-            return NoContent();
-        }
+        //     return NoContent();
+        // }
 
         // POST: api/Race
         [HttpPost]
-        public async Task<ActionResult<Races>> PostRace(List<Races> Race)
+        public async Task<ActionResult<Races>> PostRace(Races Race)
         {
-            Race.ForEach(n => _context.Races.Add(n));
+            _context.Races.Add(Race);
             await _context.SaveChangesAsync();
 
             return Ok(Race);
@@ -89,7 +89,7 @@ namespace new_api_motorgp.Controllers
             _context.Races.Remove(Race);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(CreatedAtAction("GetRace", new { id = Race.Id }, Race));
         }
 
         private bool RaceExists(int id)

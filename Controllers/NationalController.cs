@@ -37,34 +37,35 @@ namespace biker.Controllers
         }
 
         // PUT: api/national/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutNational(int id, National national)
-        {
-            if (id != national.Id)
-            {
-                return BadRequest();
-            }
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> PutNational(int id, National national)
+        // {
+        //     var nationalToEdit = _context.Nationals.Find(id);
+        //     if (nationalToEdit == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            _context.Entry(national).State = EntityState.Modified;
+        //     _context.Entry(national).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NationalExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
+        //     try
+        //     {
+        //         await _context.SaveChangesAsync();
+        //     }
+        //     catch (DbUpdateConcurrencyException)
+        //     {
+        //         if (!NationalExists(id))
+        //         {
+        //             return NotFound();
+        //         }
+        //         else
+        //         {
+        //             throw;
+        //         }
+        //     }
+        //     var nationalEdited = _context.Nationals.Find(id);
+        //     return Ok(nationalEdited);
+        // }
 
         // POST: api/national
         [HttpPost]

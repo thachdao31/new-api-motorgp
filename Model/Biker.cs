@@ -8,6 +8,7 @@ namespace biker.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int NationalId { get; set; }
+        [ForeignKey("NationalId")]
         public virtual National National { get; set; }
     }
 }

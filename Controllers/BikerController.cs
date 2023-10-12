@@ -15,32 +15,55 @@ namespace biker.Controller {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Biker>>> GetBikers()
         { 
-            return await _context.Bikers.ToListAsync();
+            var bikers = await _context.Bikers.ToListAsync();
+            foreach (var biker in bikers)
+            {
+                biker.National = _context.Nationals.Find(biker.NationalId);
+            }
+            return Ok(bikers);
         }
 
         [HttpGet("{id}")]
         public ActionResult<Biker> GetBikerById(int id) {
             var biker = _context.Bikers.Find(id);
+            if (biker == null) {
+                return NotFound();
+            }
+            biker.National = _context.Nationals.Find(biker.NationalId);
             return Ok(biker);
         }
 
         [HttpPost]
-        public ActionResult<Biker> PostBiker(List<Biker> biker) {
-            biker.ForEach(n => _context.Bikers.Add(n));
+        public ActionResult<Biker> PostBiker([FromBody] List<Biker> bikers)
+        {
+            foreach (var biker in bikers)
+            {
+                biker.National = _context.Nationals.Find(biker.NationalId);
+            }
+
+            bikers.ForEach(n => _context.Bikers.Add(n));
             _context.SaveChanges();
-            return Ok(biker);
+            return Ok(bikers);
         }
 
-        [HttpPut("{id}")]
-        public ActionResult<Biker> EditBiker(Biker biker) {
-            _context.Bikers.Update(biker);
-            _context.SaveChanges();
-            return Ok(biker);
-        }
+        // [HttpPut("{id}")]
+        // public async ActionResult<Biker> EditBiker(Biker biker, int id) {
+        //     var bikerToEdit = _context.Bikers.Find(id);
+        //     if (bikerToEdit == null) {
+        //         return NotFound();
+        //     }
+        //      _context.Bikers.Update(biker);
+        //     await _context.SaveChangesAsync();
+        //     return Ok(biker);
+        // }
+
 
         [HttpDelete("{id}")]
         public ActionResult<Biker> DeleteBiker(int id) {
             var biker = _context.Bikers.Find(id);
+            if (biker == null) {
+                return NotFound();
+            }
             _context.Bikers.Remove(biker);
             _context.SaveChanges();
             return Ok(biker);

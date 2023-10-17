@@ -105,5 +105,29 @@ namespace biker.Controllers
         {
             return _context.Points.Any(e => e.Id == id);
         }
+
+        [HttpGet("totalpoints/{id}")]
+        public async Task<IActionResult> GetTotalPointsByBikerId(int id)
+        {
+            var points = await _context.Points.Where(p => p.BikerId == id).ToListAsync();
+            int totalPoints = 0;
+            foreach (var point in points)
+            {
+                totalPoints += point.Point ?? 0;
+            }
+            return Ok(totalPoints);
+        }
+
+        //get list points sort by total points
+        [HttpGet("listSortByTotalPoints")]
+        public async Task<IActionResult> GetListPointsSort () {
+            var points = await _context.Points.ToListAsync();
+            var result = points.GroupBy(p => p.BikerId).Select(p => new {
+                BikerId = p.Key,
+                BikerObj = p,
+                TotalPoints = p.Sum(p => p.Point)
+            });
+            return Ok(result.OrderByDescending(p => p.TotalPoints));
+        }
     }
 }
